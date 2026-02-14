@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #ff758c, #ff7eb3);
+    color: white;
+    text-align: center;
+}
+
+/* MAIN PAGE */
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-img {
+    width: 260px;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
+.btn-container {
+    margin-top: 20px;
+    position: relative;
+}
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+#yesBtn { background: white; color: #ff4d6d; }
+#noBtn  { background: #ff4d6d; color: white; position: absolute; }
+
+#loveMessage { display: none; font-size: 28px; margin-top: 20px; }
+#sadText { font-size: 22px; margin-top: 10px; }
+
+/* GALLERY */
+.gallery-section { display:none; padding:40px 20px; }
+.gallery-title { font-size:32px; margin-bottom:20px; }
+
+.gallery {
+    column-count: 2;
+    column-gap: 15px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.gallery img {
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: 3px solid white;
+    cursor: pointer;
+}
+
+/* LOVE NOTE */
+.love-note {
+    margin-top: 40px;
+    padding: 25px;
+    max-width: 600px;
+    margin: auto;
+    background: rgba(255,255,255,0.2);
+    border-radius: 15px;
+    backdrop-filter: blur(8px);
+}
+
+/* NEXT ARROW */
+.next-btn {
+    margin-top: 30px;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+/* GAME */
+.game-page {
+    display:none;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+}
+
+.bucket {
+    position:absolute;
+    bottom:20px;
+    width:80px;
+    height:60px;
+    background:white;
+    border-radius:10px;
+    left:45%;
+}
+
+.heart {
+    position:absolute;
+    font-size:28px;
+    top:0;
+}
+
+.score, .timer {
+    position:absolute;
+    top:10px;
+    font-size:20px;
+}
+.score { left:10px; }
+.timer { right:10px; }
+
+/* FINAL RESULT */
+#resultScreen {
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:linear-gradient(to right,#ff758c,#ff7eb3);
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:9999;
+    text-align:center;
+    color:white;
+}
+
+/* MODAL */
+.modal {
+    display:none;
+    position:fixed;
+    z-index:999;
+    padding-top:60px;
+    left:0; top:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.9);
+}
+.modal-content {
+    margin:auto;
+    display:block;
+    max-width:80%;
+    max-height:80%;
+}
+.close {
+    position:absolute;
+    top:20px;
+    right:40px;
+    font-size:40px;
+    cursor:pointer;
+}
+
+/* CONFETTI */
+.confetti {
+    position:fixed;
+    width:10px;
+    height:10px;
+    top:0;
+    opacity:0.8;
+    animation:fall linear forwards;
+}
+@keyframes fall {
+    to { transform:translateY(100vh) rotate(720deg); opacity:0; }
+}
+</style>
+</head>
+
+<!-- 🎵 BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+    <source src="music/love.mp3" type="audio/mpeg">
+</audio>
+
+<body>
+
+<!-- MAIN -->
+<div class="container" id="mainPage">
+    <img id="mainImage" class="main-img" src="images/bubu.png.jpg">
+    <h1>Will you be my Valentine? 💖</h1>
+
+    <div class="btn-container">
+        <button id="yesBtn">Yes 💘</button>
+        <button id="noBtn">No 💔</button>
+    </div>
+
+    <div id="loveMessage">I knew this!!🧡</div>
+    <p id="sadText"></p>
+</div>
+
+<!-- GALLERY -->
+<!-- GALLERY -->
+<div class="gallery-section" id="gallerySection">
+    <h1 class="gallery-title"> Our Little Love Story ⸜(｡˃ ᵕ ˂ )⸝♡ </h1>
+
+    <div class="gallery">
+        <img src="images/img1.jpg">
+        <img src="images/img2.jpg">
+        <img src="images/img3.jpg">
+        <img src="images/img4.jpg">
+        <img src="images/img5.jpg">
+        <img src="images/img6.jpg">
+        <img src="images/img7.jpg">
+    </div>
+
+    <div class="love-note">
+To,<br>
+Bava💗,<br>
+       You’ve always been there for me, through everything.
+We may fight, we may argue, no matter how many fights we have, we still choose each other at the end of every day.<br>
+
+I’m yours, completely and forever.🧸ྀི<br>
+Every day, my love for you just grows more and more, and every moment with you is something I truly cherish.<br>
+
+I love you more than words can explain.<br>
+HAPPY VALENTINE'S DAY BAAVAAA 💞♛
+    </div>
+
+    <div class="next-btn" onclick="startGame()">➡️</div>
+</div>
+
+
+<!-- GAME -->
+<div class="game-page" id="gamePage">
+    <div class="score">Score: <span id="score">0</span>/10</div>
+    <div class="timer">Time: <span id="time">30</span>s</div>
+    <div class="bucket" id="bucket"></div>
+</div>
+
+<!-- FINAL RESULT -->
+<div id="resultScreen">
+    <div style="font-size:40px;"> You caught my heart ❣️</div>
+    <div style="margin-top:15px;font-size:22px;">Forever yours 🫂</div>
+</div>
+
+<!-- MODAL -->
+<div id="imgModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImg">
+</div>
+
+<script>
+const mainImg=document.getElementById("mainImage");
+const noBtn=document.getElementById("noBtn");
+const yesBtn=document.getElementById("yesBtn");
+const sadText=document.getElementById("sadText");
+const loveMsg=document.getElementById("loveMessage");
+const gallery=document.getElementById("gallerySection");
+
+const sadImages=[
+"images/sad_bubu_1.jpg",
+"images/sad_bubu_2.jpg",
+"images/sad_bubu_3.jpg",
+"images/sad_bubu_4.jpg"
+];
+
+let clickCount=0;
+let yesScale = 1;
+
+noBtn.onclick=()=>{
+    let i=Math.min(clickCount,sadImages.length-1);
+
+    // change sad image
+    mainImg.src = sadImages[i];
+    sadText.innerText = "Don't say no 😢";
+
+    // 👉 enlarge YES button
+    yesScale += 0.2;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    // 👉 move NO button randomly
+    noBtn.style.top = Math.random()*300 + "px";
+    noBtn.style.left = Math.random()*300 + "px";
+
+    clickCount++;
+
+    // 👉 after few clicks disable NO
+    if(clickCount >= 4){
+        noBtn.innerText = "JUST CLICK YES 😭";
+        noBtn.disabled = true;
+    }
+};
+
+
+yesBtn.onclick=()=>{
+    mainImg.src="images/bubu.png.jpg";
+    loveMsg.style.display="block";
+    startConfetti();
+document.getElementById("bgMusic").play();
+    setTimeout(()=>{
+        mainPage.style.display="none";
+        gallery.style.display="block";
+    },1500);
+};
+
+/* CONFETTI */
+function startConfetti(){
+    for(let i=0;i<100;i++){
+        let c=document.createElement("div");
+        c.className="confetti";
+        c.style.left=Math.random()*100+"vw";
+        c.style.background=["#ff4d6d","#fff","#ffd166"][Math.floor(Math.random()*3)];
+        c.style.animationDuration=(Math.random()*3+2)+"s";
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),4000);
+    }
+}
+
+/* GAME */
+let score=0;
+let timeLeft=30;
+
+function startGame(){
+    gallery.style.display="none";
+    gamePage.style.display="block";
+
+    const bucket=document.getElementById("bucket");
+
+    document.onmousemove=e=>{
+        bucket.style.left=(e.clientX-40)+"px";
+    };
+
+    setInterval(createHeart,500);
+
+    const timer=setInterval(()=>{
+        timeLeft--;
+        document.getElementById("time").innerText=timeLeft;
+
+        if(timeLeft<=0 || score>=10){
+            clearInterval(timer);
+            showResult();
+        }
+    },1000);
+}
+
+function createHeart(){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*window.innerWidth+"px";
+    gamePage.appendChild(h);
+
+    let fall=setInterval(()=>{
+        h.style.top=h.offsetTop+5+"px";
+        const bucket=document.getElementById("bucket");
+
+        if(h.offsetTop>window.innerHeight-100 &&
+           h.offsetLeft>bucket.offsetLeft &&
+           h.offsetLeft<bucket.offsetLeft+80){
+            score++;
+            document.getElementById("score").innerText=score;
+            h.remove();
+            clearInterval(fall);
+        }
+
+        if(h.offsetTop>window.innerHeight){
+            h.remove();
+            clearInterval(fall);
+        }
+    },30);
+}
+
+/* FINAL SCREEN */
+function showResult(){
+    document.getElementById("gamePage").style.display="none";
+    document.getElementById("resultScreen").style.display="flex";
+    startConfetti();
+}
+
+/* MODAL */
+const modal=document.getElementById("imgModal");
+const modalImg=document.getElementById("modalImg");
+const closeBtn=document.querySelector(".close");
+
+document.querySelectorAll(".gallery img").forEach(img=>{
+    img.onclick=()=>{
+        modal.style.display="block";
+        modalImg.src=img.src;
+    };
+});
+closeBtn.onclick=()=>modal.style.display="none";
+modal.onclick=e=>{if(e.target===modal)modal.style.display="none";};
+</script>
+
+</body>
+</html>
